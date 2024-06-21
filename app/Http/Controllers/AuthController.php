@@ -10,7 +10,12 @@ use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
-    public function register(Request $request) {
+    public function ova() {
+        dd('ova ova');
+    }
+
+    public function register(Request $request)
+    {
         $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -28,17 +33,18 @@ class AuthController extends Controller
             'gender' => $request->gender,
             'login' => $request->login,
             'email' => $request->email,
-            'pasword' => Hash::make($request->password),
+            'password' => Hash::make($request->password),
         ]);
 
         $user->sendEmailVerificationNotification();
 
         Mail::to($user->email)->send(new \App\Mail\WelcomeMail($user->login, $request->password));
 
-        return response()->json(['message' => 'User registered successfully']);
+        return response()->json(['message' => 'User registered successfully'], 201);
     }
 
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
         $request->validate([
             'login' => 'required|string',
             'password' => 'required|string'
@@ -46,7 +52,7 @@ class AuthController extends Controller
 
         $credentials = $request->only('login', 'password');
 
-        if(Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials)) {
             $user = Auth::user();
             $token = $user->createToken('LaravelPassportAuth')->accessToken;
 
@@ -56,11 +62,13 @@ class AuthController extends Controller
         }
     }
 
-    public function userInfo(Request $request) {
+    public function userInfo(Request $request)
+    {
         return response()->json($request->user());
     }
 
-    public function updateProfile(Request $request) {
+    public function updateProfile(Request $request)
+    {
         $user = $request->user();
         $user->update($request->all());
 
