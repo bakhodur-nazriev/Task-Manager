@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to our application</title>
+    <title>Welcome to Our Application</title>
 </head>
 <body>
-    <p>Welcome to our application</p>
-    <p>Here are your login details:</p>
-    <p>Login: {{ $login }}</p>
-    <p>Password: {{ $password }}</p>
+    <h1>Welcome to Our Application</h1>
+    <p>Thank you for registering. Here are your login details:</p>
+    <p><strong>Login:</strong> {{ $login }}</p>
+    <p><strong>Password:</strong> {{ $password }}</p>
+    <p>Please click the link below to verify your email address:</p>
+    <a href="{{ route('verification.notice') }}">Verify Email</a>
 </body>
 </html>

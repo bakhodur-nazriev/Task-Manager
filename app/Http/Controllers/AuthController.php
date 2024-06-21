@@ -10,10 +10,6 @@ use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
-    public function ova() {
-        dd('ova ova');
-    }
-
     public function register(Request $request)
     {
         $request->validate([
@@ -23,7 +19,7 @@ class AuthController extends Controller
             'gender' => 'required|in:male,female',
             'login' => 'required|string|max:255|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
+            'password' => 'required|string|min:5',
         ]);
 
         $user = User::create([
@@ -47,7 +43,7 @@ class AuthController extends Controller
     {
         $request->validate([
             'login' => 'required|string',
-            'password' => 'required|string'
+            'password' => 'required|string',
         ]);
 
         $credentials = $request->only('login', 'password');
@@ -55,8 +51,7 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
             $token = $user->createToken('LaravelPassportAuth')->accessToken;
-
-            return response()->json(['token' => '$token'], 200);
+            return response()->json(['token' => $token], 200);
         } else {
             return response()->json(['error' => 'Unauthorized'], 401);
         }

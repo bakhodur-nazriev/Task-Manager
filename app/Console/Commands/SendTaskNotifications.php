@@ -23,7 +23,8 @@ class SendTaskNotifications extends Command
      */
     protected $description = 'Send task notifications to users';
 
-    public function __constructor() {
+    public function __constructor()
+    {
         parent::__contruct();
     }
 
@@ -33,14 +34,14 @@ class SendTaskNotifications extends Command
     public function handle()
     {
         $now = Carbon::now();
-
         $tasks = Task::whereRaw('JSON_CONTAINS(days_of_week, \'["' . $now->dayOfWeek . '"]\')')
             ->where('job_time', $now->format('H:i:s'))
             ->get();
 
-        foreach($tasks as $task){
-            Mail::raw($task->text, function($message) use ($task) {
-                $message->to($task->email)->subject($task->title);
+        foreach ($tasks as $task) {
+            Mail::raw($task->text, function ($message) use ($task) {
+                $message->to($task->email)
+                    ->subject($task->title);
             });
         }
     }

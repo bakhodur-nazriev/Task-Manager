@@ -14,7 +14,7 @@ class WelcomeMail extends Mailable
     use Queueable, SerializesModels;
 
     public $login;
-    public $passwort;
+    public $password;
 
     /**
      * Create a new message instance.
@@ -25,37 +25,14 @@ class WelcomeMail extends Mailable
         $this->password = $passwort;
     }
 
-    /**
-     * Get the message envelope.
-     */
-    public function envelope(): Envelope
-    {
-        return new Envelope(
-            subject: 'Welcome Mail',
-        );
-    }
 
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
+    public function build()
     {
-        return new Content(
-            view: 'view.name',
-        );
-    }
-
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
-    {
-        return [];
-    }
-
-    public function build() {
-        return $this->subject('Welcome to our application')->view('emails.welcome');
+        return $this->subject('Welcome to our application')
+            ->view('emails.welcome')
+            ->with([
+                'login' => $this->login,
+                'password' => $this->password,
+            ]);
     }
 }

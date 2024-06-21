@@ -20,7 +20,6 @@ class TaskController extends Controller
      */
     public function create()
     {
-        
     }
 
     /**
@@ -33,7 +32,7 @@ class TaskController extends Controller
             'text' => 'required|string',
             'email' => 'required|string|email|max:255',
             'job_time' => 'required',
-            'days_of_week' => 'required|json'
+            'days_of_week' => 'required|json',
         ]);
 
         $task = new Task($request->all());
@@ -74,7 +73,7 @@ class TaskController extends Controller
     public function destroy(Task $task)
     {
         $task->delete();
-
+        
         return response()->json(['message' => 'Task deleted successfully']);
     }
 }
